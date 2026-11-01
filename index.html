@@ -1,0 +1,330 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CreatorBuddy AI</title>
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #090914;
+  color: #f5f3ff;
+  min-height: 100vh;
+}
+
+header {
+  padding: 22px 7%;
+  border-bottom: 1px solid #27243d;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 23px;
+  font-weight: 800;
+  color: #b99aff;
+}
+
+.version {
+  font-size: 12px;
+  color: #aaa0c7;
+}
+
+main {
+  max-width: 850px;
+  margin: 55px auto;
+  padding: 0 20px;
+}
+
+.hero { text-align: center; }
+
+.hero h1 {
+  font-size: clamp(32px, 7vw, 52px);
+  margin-bottom: 12px;
+}
+
+.hero h1 span {
+  color: #aa80ff;
+}
+
+.hero p {
+  color: #aaa7bd;
+  line-height: 1.6;
+}
+
+.panel {
+  background: #151426;
+  border: 1px solid #302849;
+  border-radius: 20px;
+  padding: 25px;
+  margin-top: 35px;
+}
+
+label {
+  display: block;
+  margin: 18px 0 9px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+input, select {
+  width: 100%;
+  padding: 15px;
+  background: #0d0c1a;
+  border: 1px solid #39334f;
+  border-radius: 11px;
+  color: white;
+  font-size: 15px;
+  outline: none;
+}
+
+input:focus, select:focus {
+  border-color: #a879ff;
+}
+
+button {
+  cursor: pointer;
+  border: 0;
+  border-radius: 11px;
+  padding: 14px 18px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.generate {
+  width: 100%;
+  margin-top: 23px;
+  background: linear-gradient(100deg, #8051e9, #bd70fa);
+  color: white;
+  font-size: 16px;
+}
+
+.generate:hover { opacity: .9; }
+
+.results {
+  display: none;
+  margin-top: 28px;
+}
+
+.result-card {
+  background: #151426;
+  border: 1px solid #302849;
+  border-radius: 15px;
+  padding: 18px;
+  margin: 14px 0;
+}
+
+.result-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.result-heading h3 {
+  font-size: 15px;
+  color: #c6a5ff;
+}
+
+.copy {
+  background: #30234c;
+  color: #e5d7ff;
+}
+
+.result-text {
+  color: #e0dced;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  font-size: 14px;
+}
+
+footer {
+  text-align: center;
+  padding: 35px 15px;
+  color: #77738e;
+  font-size: 12px;
+}
+
+@media(max-width: 500px) {
+  main { margin-top: 35px; }
+  .panel { padding: 18px; }
+  header { padding: 18px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">✦ CreatorBuddy AI</div>
+  <div class="version">VERSION 1.0</div>
+</header>
+
+<main>
+  <section class="hero">
+    <h1>Create smarter.<br><span>Grow faster.</span></h1>
+    <p>Your creative assistant for TikTok ideas, scripts,
+    captions and more.</p>
+  </section>
+
+  <section class="panel">
+    <h2>✨ Create your content</h2>
+    <p style="color:#aaa7bd;font-size:13px">
+      Tell us what your next video is about.
+    </p>
+
+    <label for="topic">What's your video topic?</label>
+    <input id="topic" type="text"
+      placeholder="Example: 5 AI apps students should use">
+
+    <label for="type">What do you want to generate?</label>
+    <select id="type">
+      <option value="ideas">Video ideas</option>
+      <option value="hooks">Viral-style hooks</option>
+      <option value="script">Video scripts</option>
+      <option value="caption">Captions</option>
+      <option value="hashtags">Hashtags</option>
+      <option value="all">Everything</option>
+    </select>
+
+    <label for="tone">Choose your style</label>
+    <select id="tone">
+      <option value="fun">Fun and engaging</option>
+      <option value="professional">Professional</option>
+      <option value="educational">Educational</option>
+    </select>
+
+    <button class="generate" onclick="generate()">
+      ✨ Generate content
+    </button>
+  </section>
+
+  <section class="results" id="results">
+    <h2>Your creations ✨</h2>
+    <div id="output"></div>
+  </section>
+</main>
+
+<footer>
+  CreatorBuddy AI · Made for creators
+</footer>
+
+<script>
+function generate() {
+  const topic = document.getElementById("topic")
+    .value.trim();
+  const type = document.getElementById("type").value;
+  const tone = document.getElementById("tone").value;
+
+  if (!topic) {
+    alert("Please enter a video topic first!");
+    return;
+  }
+
+  const styles = {
+    fun: "Let's make this exciting!",
+    professional: "Here is a clear and polished approach.",
+    educational: "Let's break this down in a useful way."
+  };
+
+  const ideas = [
+    "5 things nobody tells you about " + topic,
+    "A beginner's guide to " + topic,
+    "I tried " + topic + " — here's what I learned",
+    "3 mistakes to avoid with " + topic,
+    "Everything you need to know about " + topic
+  ];
+
+  const hooks = [
+    "Stop scrolling! You need to know this about " + topic + ".",
+    "I wish I knew this earlier: " + topic + ".",
+    "Here are 3 things that could change how you approach " + topic + ".",
+    "Nobody talks about this side of " + topic + ".",
+    "Save this video if you're interested in " + topic + "."
+  ];
+
+  const script =
+    "HOOK:\n" + hooks[0] +
+    "\n\nINTRO:\n" + styles[tone] +
+    "\n\nMAIN CONTENT:\n" +
+    "First, introduce the topic: " + topic +
+    ".\nNext, explain three useful points.\n" +
+    "Then, give a practical example.\n\n" +
+    "ENDING:\nIf you found this useful, follow for more!";
+
+  const caption =
+    "✨ Let's talk about " + topic +
+    "!\nSave this post so you can come back to it.\n" +
+    "#CreatorTips #ContentCreator #LearnOnTikTok";
+
+  const hashtags =
+    "#CreatorTips #TikTokTips #ContentCreation " +
+    "#LearnSomethingNew #CreatorBuddy";
+
+  const data = {
+    ideas: ["Video ideas", ideas.join("\n\n")],
+    hooks: ["Video hooks", hooks.join("\n\n")],
+    script: ["Video script", script],
+    caption: ["Caption", caption],
+    hashtags: ["Hashtag suggestions", hashtags]
+  };
+
+  let selected = type === "all"
+    ? Object.values(data)
+    : [data[type]];
+
+  document.getElementById("output").innerHTML =
+    selected.map((item, index) => `
+      <div class="result-card">
+        <div class="result-heading">
+          <h3>${item[0]}</h3>
+          <button class="copy"
+            onclick="copyText(${index})">Copy</button>
+        </div>
+        <div class="result-text" id="result-${index}"></div>
+      </div>
+    `).join("");
+
+  selected.forEach((item, index) => {
+    document.getElementById("result-" + index)
+      .textContent = item[1];
+  });
+
+  document.getElementById("results").style.display = "block";
+  document.getElementById("results").scrollIntoView({
+    behavior: "smooth"
+  });
+
+  window.generatedResults = selected;
+}
+
+function copyText(index) {
+  const text = window.generatedResults[index][1];
+
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text)
+      .then(() => alert("Copied!"))
+      .catch(() => fallbackCopy(text));
+  } else {
+    fallbackCopy(text);
+  }
+}
+
+function fallbackCopy(text) {
+  const area = document.createElement("textarea");
+  area.value = text;
+  document.body.appendChild(area);
+  area.select();
+  document.execCommand("copy");
+  area.remove();
+  alert("Copied!");
+}
+</script>
+
+</body>
+</html>
